@@ -2,6 +2,12 @@
 
 _JS powered plot for GO_
 
+Based on *gonum*.
+
+```
+go get gonum.org/v1/gonum/...
+```
+
 ## Functions
 
 **PlotDense(m _Dense_, x _[]float64_, y _[]float64_)** Plot a matrix of data whose axis are given by `x` and `y`. Dimensions must agree.
@@ -11,8 +17,9 @@ accessible at `localhost:8080` in any browser.
 
 ## Usage
 
-Matrix plotting
-```
+###Matrix plotting
+
+```go
 data := make([]float64, size*size)
 m := mat64.NewDense(size, size, data)
 x := make([]float64, size)
