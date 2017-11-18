@@ -10,7 +10,6 @@ import (
 
 var (
 	serverInstances int
-	visualizations []VisualizeData
 )
 
 func routeData(w http.ResponseWriter, req *http.Request) {
@@ -51,6 +50,5 @@ func Show(blocking bool) {
 }
 
 func init() {
-	fmt.Println("Using goplotjs...")
 	serverInstances = 0
 }
