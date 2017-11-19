@@ -1,10 +1,8 @@
-# GoPlotJS
+---
+title: Examples
+---
 
-_JS powered plot for GO_
-
-Documentation : https://romaingin.github.io/goplotjs/
-
-## Example
+### Line Plot
 
 ```go
 x1 := make([]float64, size)
@@ -17,5 +15,18 @@ y2 := make([]float64, size)
 goplotjs.PlotLine(x1, y1, "x²")
 goplotjs.AddPlotLine(x2, y2, "2x²")
 goplotjs.SetTitle("Quadratic")
+goplotjs.Show(true)
+```
+
+### Heat-map Plot
+
+```go
+m := mat64.NewDense(size, size, data)
+x := make([]float64, size)
+y := make([]float64, size)
+...
+
+// Call plot routines
+goplotjs.PlotDense(m, x, y)
 goplotjs.Show(true)
 ```
