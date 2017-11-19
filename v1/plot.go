@@ -1,5 +1,6 @@
 package goplotjs
 
+// Define interface for all types of graphs
 type Viz interface {
 	setTitle(string)
 	getTitle() string

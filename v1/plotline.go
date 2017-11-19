@@ -31,6 +31,7 @@ func PlotLine(x, y []float64, name string) {
 	addVisualization(&viz)
 }
 
+// > AddPlotLine draw one function plot on top of the previous line chart
 func AddPlotLine(x, y []float64, name string) {
 	if len(x) != len(y) {
 		panic("Dimensions must agree")
@@ -44,6 +45,7 @@ func AddPlotLine(x, y []float64, name string) {
 	(*lastVizualizationLine).Names = append((*lastVizualizationLine).Names, name)
 }
 
+// Visualization interface getters and setters
 func (v *VisualizeLine) setTitle(title string) {
 	v.Title = title
 }

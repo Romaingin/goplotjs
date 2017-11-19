@@ -22,6 +22,7 @@ func PlotMap(lat, lon []float64) {
 	addVisualization(&viz)
 }
 
+// Visualization interface getters and setters
 func (v *VisualizeMap) setTitle(title string) {
 	v.Title = title
 }

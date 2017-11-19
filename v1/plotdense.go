@@ -44,6 +44,7 @@ func PlotDense(m *mat64.Dense, x, y []float64) {
 	addVisualization(&viz)
 }
 
+// Visualization interface getters and setters
 func (v *VisualizeDense) setTitle(title string) {
 	v.Title = title
 }

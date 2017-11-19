@@ -18,6 +18,7 @@ type Visualizations struct {
 	Types []string `json:"types"`
 }
 
+// > routeData respond with dat required for a particular id
 func routeData(w http.ResponseWriter, req *http.Request) {
 	if req.Body == nil {
 		http.Error(w, "Please send a request body", 400)
@@ -35,6 +36,7 @@ func routeData(w http.ResponseWriter, req *http.Request) {
 	json.NewEncoder(w).Encode(visualizations[id])
 }
 
+// > routeVisualizations respond with all available visualizations
 func routeVisualizations(w http.ResponseWriter, req *http.Request) {
 	if req.Body == nil {
 		http.Error(w, "Please send a request body", 400)
@@ -52,6 +54,7 @@ func routeVisualizations(w http.ResponseWriter, req *http.Request) {
 	json.NewEncoder(w).Encode(viz)
 }
 
+// > Show runs a local HTTP server on port 8080 to display charts
 func Show(blocking bool) {
 	_, runContext, _, ok := runtime.Caller(0)
 	if !ok {
@@ -69,6 +72,8 @@ func Show(blocking bool) {
 	} else {
 		panic("Visualization already in progress")
 	}
+
+	fmt.Println("\x1b[34mVisit localhost:8080 to see the graphs\x1b[0m")
 
 	if blocking {
 		var input string
