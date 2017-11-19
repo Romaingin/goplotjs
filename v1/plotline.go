@@ -47,3 +47,11 @@ func AddPlotLine(x, y []float64, name string) {
 func (v *VisualizeLine) setTitle(title string) {
 	v.Title = title
 }
+
+func (v *VisualizeLine) getTitle() string {
+	return v.Title
+}
+
+func (v *VisualizeLine) getType() string {
+	return v.Type
+}

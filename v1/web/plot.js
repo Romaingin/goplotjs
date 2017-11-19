@@ -1,24 +1,32 @@
+var url_string = window.location.href;
+var url = new URL(url_string);
+var id = url.searchParams.get("id");
+
 var xhttp = new XMLHttpRequest();
-xhttp.open("GET", "/data", false);
+xhttp.open("GET", "/data?id="+id, false);
 xhttp.setRequestHeader("Content-type", "application/json");
 xhttp.send();
 res = JSON.parse(xhttp.responseText);
 
 switch (res.type) {
 	case "matrix":
-	plotMatrix(res)
+		plotMatrix(res)
 	break
 	case "line":
-	plotLines(res)
+		plotLines(res)
 	break
 	case "map":
-	plotMap(res)
+		plotMap(res)
 	break
 	default:
-
+		console.log("Bad Type");
 }
 
+document.title = res.title
+
 function plotMatrix(res) {
+	document.getElementById("chart").style.width = '100vh'
+
 	var visualize = [{
 		z: res.data,
 		x: res.x,
@@ -38,6 +46,8 @@ function plotMatrix(res) {
 }
 
 function plotLines(res) {
+	document.getElementById("chart").style.width = '100vh'
+
 	var data = [];
 	for (var i = 0; i < res.x.length; i++) {
 		var trace = {
@@ -58,6 +68,8 @@ function plotLines(res) {
 }
 
 function plotMap(res) {
+	document.getElementById("chart").style.width = '100vw'
+
 	var lon = [4.413841];
 	var lat = [50.860589];
 	// var symbols = ['monument', 'harbor', 'music'];
@@ -74,7 +86,7 @@ function plotMap(res) {
 		},
 	};
 	data = [result]
-	//
+
 	// var data = [result, {
 	// 	type: 'scattermapbox',
 	// 	mode: 'markers',

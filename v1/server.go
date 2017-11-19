@@ -6,11 +6,17 @@ import (
 	"net/http"
 	"path"
 	"runtime"
+	"strconv"
 )
 
 var (
 	serverInstances int
 )
+
+type Visualizations struct {
+	Titles []string `json:"titles"`
+	Types []string `json:"types"`
+}
 
 func routeData(w http.ResponseWriter, req *http.Request) {
 	if req.Body == nil {
@@ -18,11 +24,32 @@ func routeData(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	fmt.Print(req.URL.Query().Get("id"))
+	id, err := strconv.Atoi(req.URL.Query().Get("id"))
+	if err != nil {
+		http.Error(w, "Invalid id", 400)
+		return
+	}
 
 	// Send response
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(visualizations[0])
+	json.NewEncoder(w).Encode(visualizations[id])
+}
+
+func routeVisualizations(w http.ResponseWriter, req *http.Request) {
+	if req.Body == nil {
+		http.Error(w, "Please send a request body", 400)
+		return
+	}
+
+	var viz Visualizations
+	for _, v := range visualizations {
+		viz.Titles = append(viz.Titles, v.getTitle())
+		viz.Types = append(viz.Types, v.getType())
+	}
+
+	// Send response
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(viz)
 }
 
 func Show(blocking bool) {
@@ -31,6 +58,7 @@ func Show(blocking bool) {
 		panic("No caller information")
 	}
 	http.Handle("/", http.FileServer(http.Dir(path.Dir(runContext) + "/web")))
+	http.HandleFunc("/visualizations", routeVisualizations)
 	http.HandleFunc("/data", routeData)
 	port := "8080"
 

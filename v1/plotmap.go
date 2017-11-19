@@ -25,3 +25,11 @@ func PlotMap(lat, lon []float64) {
 func (v *VisualizeMap) setTitle(title string) {
 	v.Title = title
 }
+
+func (v *VisualizeMap) getTitle() string {
+	return v.Title
+}
+
+func (v *VisualizeMap) getType() string {
+	return v.Type
+}

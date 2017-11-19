@@ -47,3 +47,11 @@ func PlotDense(m *mat64.Dense, x, y []float64) {
 func (v *VisualizeDense) setTitle(title string) {
 	v.Title = title
 }
+
+func (v *VisualizeDense) getTitle() string {
+	return v.Title
+}
+
+func (v *VisualizeDense) getType() string {
+	return v.Type
+}

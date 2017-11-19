@@ -2,6 +2,8 @@ package goplotjs
 
 type Viz interface {
 	setTitle(string)
+	getTitle() string
+	getType() string
 }
 
 var (
