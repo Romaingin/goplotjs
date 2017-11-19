@@ -3,26 +3,28 @@ var url = new URL(url_string);
 var id = url.searchParams.get("id");
 
 var xhttp = new XMLHttpRequest();
-xhttp.open("GET", "/data?id="+id, false);
-xhttp.setRequestHeader("Content-type", "application/json");
-xhttp.send();
-res = JSON.parse(xhttp.responseText);
+xhttp.open("GET", "/data?id="+id, true);
+xhttp.onload = function (e) {
+	if (xhttp.status === 200) {
+		res = JSON.parse(xhttp.responseText);
 
-switch (res.type) {
-	case "matrix":
-		plotMatrix(res)
-	break
-	case "line":
-		plotLines(res)
-	break
-	case "map":
-		plotMap(res)
-	break
-	default:
-		console.log("Bad Type");
+		document.title = res.title
+		
+		switch (res.type) {
+			case "matrix":
+			plotMatrix(res)
+			break
+			case "line":
+			plotLines(res)
+			break
+			case "map":
+			plotMap(res)
+			break
+			default:
+			console.log("Bad Type");
+		}
+	}
 }
-
-document.title = res.title
 
 function plotMatrix(res) {
 	document.getElementById("chart").style.width = '100vh'
@@ -31,10 +33,8 @@ function plotMatrix(res) {
 		z: res.data,
 		x: res.x,
 		y: res.y,
-		type: 'contour',
-		contours: {
-			coloring: 'heatmap'
-		}
+		zsmooth: 'best',
+		type: 'heatmap'
 	}];
 
 	var layout = {
@@ -125,3 +125,4 @@ function plotMap(res) {
 
 	Plotly.newPlot('chart', data, layout, {});
 }
+xhttp.send();

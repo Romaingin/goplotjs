@@ -18,24 +18,35 @@ func main()  {
 		dy := 0.05
 
 		// Allocate memory
-		data := make([]float64, size*size)
-		x := make([]float64, size)
-		y := make([]float64, size)
+		m := mat64.NewDense(size, size, nil)
+		x := mat64.NewVector(size, nil)
+		y := mat64.NewVector(size, nil)
+		x_array := make([]float64, size)
+		y_array := make([]float64, size)
+		for i := 0; i < size; i++ {
+			x.SetVec(i, dx * float64(i))
+			y.SetVec(i, dy * float64(i))
+			x_array[i] = dx * float64(i)
+			y_array[i] = dy * float64(i)
+		}
 
 		// Fill data
 		for i := 0; i < size; i++ {
 			for j := 0; j < size; j++ {
-				data[size * i + j] = float64(i*j)
+				m.Set(i, j, float64(i*j))
 			}
-
-			x[i] = dx * float64(i)
-			y[i] = dy * float64(i)
 		}
-		m := mat64.NewDense(size, size, data)
 
 		// Call plot routines
 		goplotjs.PlotDense(m, x, y)
-		goplotjs.SetTitle("Heatmap & Contour")
+		goplotjs.SetTitle("Heatmap Vector Axis")
+
+		goplotjs.PlotDense(m, x_array, y_array)
+		goplotjs.SetTitle("Heatmap Array Axis")
+
+		goplotjs.PlotDense(m, dx, dy, -0.5, 1.5)
+		goplotjs.SetTitle("Heatmap Increment-Offset Axis")
+
 		goplotjs.Show(true)
 
 	case "line":
@@ -62,6 +73,7 @@ func main()  {
 		goplotjs.PlotLine(x1, y1, "x²")
 		goplotjs.AddPlotLine(x2, y2, "2x²")
 		goplotjs.SetTitle("Quadratic")
+
 		goplotjs.Show(true)
 
 	case "map":
@@ -72,6 +84,7 @@ func main()  {
 		// Call plot routines
 		goplotjs.PlotMap(lat, lon)
 		goplotjs.SetTitle("Brussels Map")
+
 		goplotjs.Show(true)
 	case "multi":
 		// Define settings
@@ -99,6 +112,7 @@ func main()  {
 
 		goplotjs.PlotLine(x2, y2, "x²")
 		goplotjs.SetTitle("Quadratic")
+
 		goplotjs.Show(true)
 	}
 }
