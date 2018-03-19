@@ -1,59 +1,43 @@
 package goplotjs
 
-type VisualizeLine struct{
-	Type string `json:"type"`
-	Title string `json:"title"`
-	X [][]float64 `json:"x"`
-	Y [][]float64 `json:"y"`
-	Names []string `json:"names"`
-}
+// PlotLine set the graph to LINE mode, and add line data
+// on the fly
+func PlotLine(x, y interface{}, name string) {
+	X := castToFloat64(x)
+	Y := castToFloat64(y)
 
-var lastVizualizationLine *VisualizeLine
-
-// > PlotLine forms a visualizable data structures given some x ant y points.
-func PlotLine(x, y []float64, name string) {
-	if len(x) != len(y) {
+	if len(X) != len(Y) {
 		panic("Dimensions must agree")
 	}
 
-	var viz VisualizeLine
-	viz.X = make([][]float64, 1)
-	viz.Y = make([][]float64, 1)
-	viz.Names = make([]string, 1)
+	// Set graph
+	var g Graph
+	g.Type = "line"
+	g.Data = make([]interface{}, 1)
 
-	viz.Type = "line"
-	viz.Title = "Line Plot"
-	viz.X[0] = x
-	viz.Y[0] = y
-	viz.Names[0] = name
+	g.Data[0] = DataLine{
+		Name: name,
+		X:    X,
+		Y:    Y,
+	}
 
-	lastVizualizationLine = &viz
-	addVisualization(&viz)
+	graphs.addGraph(g)
 }
 
-// > AddPlotLine draw one function plot on top of the previous line chart
-func AddPlotLine(x, y []float64, name string) {
-	if len(x) != len(y) {
+// AddPlotLine ...
+func AddPlotLine(x, y interface{}, name string) {
+	X := castToFloat64(x)
+	Y := castToFloat64(y)
+
+	if len(X) != len(Y) {
 		panic("Dimensions must agree")
 	}
-	if lastVizualizationLine == nil {
-		panic("No line plot to add to")
-	}
 
-	(*lastVizualizationLine).X = append((*lastVizualizationLine).X, x)
-	(*lastVizualizationLine).Y = append((*lastVizualizationLine).Y, y)
-	(*lastVizualizationLine).Names = append((*lastVizualizationLine).Names, name)
-}
+	g := graphs.getLast()
 
-// Visualization interface getters and setters
-func (v *VisualizeLine) setTitle(title string) {
-	v.Title = title
-}
-
-func (v *VisualizeLine) getTitle() string {
-	return v.Title
-}
-
-func (v *VisualizeLine) getType() string {
-	return v.Type
+	g.Data = append(g.Data, DataLine{
+		Name: name,
+		X:    X,
+		Y:    Y,
+	})
 }
