@@ -26,7 +26,7 @@ func castToMatrix64(m interface{}) [][]float64 {
 	case *mat64.Dense:
 		r, _ := v.Dims()
 
-		M := make([][]float64, r)
+		M = make([][]float64, r)
 		for i := 0; i < r; i++ {
 			M[i] = v.RawRowView(i)
 		}

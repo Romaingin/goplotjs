@@ -20,9 +20,9 @@ function plotLines (g) {
 
 function plotMatrix (g) {
 	var visualize = [{
-		z: g.data.matrix,
-		x: g.data.x,
-		y: g.data.y,
+		z: g.data[0].matrix,
+		x: g.data[0].x,
+		y: g.data[0].y,
 		zsmooth: 'best',
 		type: 'heatmap'
 	}]

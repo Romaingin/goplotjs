@@ -20,22 +20,22 @@ func main() {
 	// w := 0.5
 	dx := 1.0 / float64(lInterval)
 	dt := 1.0 / float64(tInterval)
-	x_0 := 0.0
+	x0 := 0.0
 
 	// Allocate memory
-	t_ := mat64.NewVector(tInterval+1, nil)
-	x_ := mat64.NewVector(lInterval+1, nil)
+	t := mat64.NewVector(tInterval+1, nil)
+	x := mat64.NewVector(lInterval+1, nil)
 	for n := 0; n < tInterval+1; n++ {
-		t_.SetVec(n, dt*float64(n))
+		t.SetVec(n, dt*float64(n))
 	}
 	for j := 0; j < lInterval+1; j++ {
-		x_.SetVec(j, dx*float64(j)+x_0)
+		x.SetVec(j, dx*float64(j)+x0)
 	}
 	k := mat64.NewDense(tInterval+1, lInterval+1, nil)
 
 	// Boundary conditions
 	for j := 0; j < lInterval; j++ {
-		k.Set(0, j, gauss(x_.At(j, 0)))
+		k.Set(0, j, gauss(x.At(j, 0)))
 	}
 
 	// Run simulation
@@ -49,7 +49,7 @@ func main() {
 	}
 
 	// Call plot routines
-	goplotjs.PlotDense(k, x_, t_)
+	goplotjs.PlotMatrix(k, x, t)
 	goplotjs.SetTitle("Wave Propagation")
-	goplotjs.Show(true)
+	goplotjs.Show()
 }

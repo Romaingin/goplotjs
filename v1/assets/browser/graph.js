@@ -10,6 +10,7 @@ xhttp.onload = function (e) {
 		graph = JSON.parse(xhttp.responseText)
 
 		document.title = graph.title
+		document.getElementById('chart').style.width = '100vh'
 
 		switch (graph.type) {
 		case "matrix":
