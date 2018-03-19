@@ -26,6 +26,9 @@ func main() {
 	goplotjs.AddPlotLine(x, y2, "2x²")
 	goplotjs.SetTitle("Quadratic")
 
+	goplotjs.PlotLine(x, y1, "x²")
+	goplotjs.SetTitle("Quadratic 2")
+
 	// Show the graph
 	goplotjs.Show("window")
 }

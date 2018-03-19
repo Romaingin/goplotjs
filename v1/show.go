@@ -23,6 +23,11 @@ func SetTitle(t string) {
 
 // Show displays the graphs in a window or in a browser
 func Show(mode ...string) {
+	if graphs.len() == 0 {
+		println("Nothing to plot...")
+		return
+	}
+
 	var m string
 	if len(mode) == 0 {
 		m = "browser"
@@ -38,52 +43,50 @@ func Show(mode ...string) {
 	}
 }
 
-// showWindow open a webview with the first graph
+// showWindow open a webview with the graphs
 func showWindow() {
-	if graphs.len() == 0 {
-		println("Nothing to plot...")
-		return
-	}
+	// Fetch info about module directory
+	_, filename, _, _ := runtime.Caller(0)
 
-	w := webview.New(webview.Settings{
-		Title:  "GoPlotJS " + graphs.get(0).Title,
-		Debug:  true,
-		Width:  800,
-		Height: 600,
-	})
-	defer w.Exit()
+	// Open assets
+	datPlotly, _ := ioutil.ReadFile(path.Dir(filename) + "/assets/common/plotly.js")
+	datPlot, _ := ioutil.ReadFile(path.Dir(filename) + "/assets/common/plot.js")
+	datApp, _ := ioutil.ReadFile(path.Dir(filename) + "/assets/webview/app.js")
 
-	w.Dispatch(func() {
-		// Inject graph
-		w.Bind("graph", graphs.get(0))
+	webviews := make([]webview.WebView, 2)
+
+	for i := 0; i < graphs.len(); i++ {
+		// Setup a new window
+		webviews[i] = webview.New(webview.Settings{
+			Title:  "GoPlotJS " + graphs.get(i).Title,
+			Debug:  true,
+			Width:  800,
+			Height: 600,
+		})
+		defer webviews[i].Exit()
+
+		// Inject graph object
+		webviews[i].Dispatch(func() {
+			webviews[i].Bind("graph", graphs.get(i))
+		})
 
 		// Inject CSS and JS
-		// Fetch info about module directory
-		_, filename, _, _ := runtime.Caller(0)
+		webviews[i].Eval(string(datPlotly))
+		webviews[i].Eval(string(datPlot))
+		webviews[i].Eval(string(datApp))
 
-		// Open assets
-		dat, _ := ioutil.ReadFile(path.Dir(filename) + "/assets/common/plotly.js")
-		w.Eval(string(dat))
-
-		dat, _ = ioutil.ReadFile(path.Dir(filename) + "/assets/common/plot.js")
-		w.Eval(string(dat))
-
-		dat, _ = ioutil.ReadFile(path.Dir(filename) + "/assets/webview/app.js")
-		w.Eval(string(dat))
-	})
-
-	// Run the webview
-	w.Run()
+		// Run the windows
+		if i == graphs.len()-1 {
+			webviews[0].Run()
+		}
+	}
 }
 
 // showBrowser runs a local HTTP server on port 8080 to display charts
 func showBrowser(blocking ...bool) {
-	_, runContext, _, ok := runtime.Caller(0)
-	if !ok {
-		panic("No caller information")
-	}
+	_, filepath, _, _ := runtime.Caller(0)
 
-	http.Handle("/", http.FileServer(http.Dir(path.Dir(runContext)+"/assets")))
+	http.Handle("/", http.FileServer(http.Dir(path.Dir(filepath)+"/assets")))
 	http.HandleFunc("/allgraphs", routeAllGraphs)
 	http.HandleFunc("/graph", routeGraphByID)
 	port := "8080"
