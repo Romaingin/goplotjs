@@ -51,5 +51,6 @@ func main() {
 	// Call plot routines
 	goplotjs.PlotMatrix(k, x, t)
 	goplotjs.SetTitle("Wave Propagation")
+
 	goplotjs.Show()
 }

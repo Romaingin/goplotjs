@@ -2,7 +2,7 @@
 
 _JS powered plot for GO_
 
-Documentation : https://romaingin.github.io/goplotjs/
+Documentation : https://rginestou.github.io/goplotjs/
 
 ## Example
 

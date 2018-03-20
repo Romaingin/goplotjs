@@ -20,6 +20,7 @@ Function to call after a new plot. Add a title to the graph.
 
 ## Show
 
-(block _bool_)
+("window", "browser")
 
-Function to call once at the end. Launch the visualization accessible at `localhost:8080` in any browser.
+Function to call once at the end.
+Launch the visualization accessible at `localhost:8080` in any browser, or in webviews.

@@ -30,7 +30,7 @@ func main() {
 	goplotjs.SetTitle("Quadratic 2")
 
 	// Show the graph
-	goplotjs.Show("window")
+	goplotjs.Show()
 }
 
 // 	case "map":

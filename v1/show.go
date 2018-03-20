@@ -30,7 +30,7 @@ func Show(mode ...string) {
 
 	var m string
 	if len(mode) == 0 {
-		m = "browser"
+		m = "window"
 	} else {
 		m = mode[0]
 	}
@@ -53,7 +53,7 @@ func showWindow() {
 	datPlot, _ := ioutil.ReadFile(path.Dir(filename) + "/assets/common/plot.js")
 	datApp, _ := ioutil.ReadFile(path.Dir(filename) + "/assets/webview/app.js")
 
-	webviews := make([]webview.WebView, 2)
+	webviews := make([]webview.WebView, graphs.len())
 
 	for i := 0; i < graphs.len(); i++ {
 		// Setup a new window
@@ -99,7 +99,7 @@ func showBrowser(blocking ...bool) {
 		panic("Visualization already in progress")
 	}
 
-	fmt.Println("\x1b[34mVisit localhost:8080 to see the graphs\x1b[0m")
+	fmt.Println("\x1b[34mVisit http://localhost:8080 to see the graphs\x1b[0m")
 
 	if len(blocking) == 0 || blocking[0] {
 		var input string
